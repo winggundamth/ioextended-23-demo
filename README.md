@@ -16,6 +16,9 @@ export PROJECT_ID=$(gcloud config get project)
 export REGION=asia-southeast1
 gcloud config set deploy/region ${REGION}
 
+gcloud artifacts repositories create containers --repository-format=docker \
+  --location=${REGION} --description="Docker repository"
+
 gcloud projects add-iam-policy-binding ${PROJECT_ID} \
   --member=serviceAccount:$(gcloud projects describe ${PROJECT_ID} \
   --format="value(projectNumber)")-compute@developer.gserviceaccount.com \
@@ -30,9 +33,6 @@ gcloud projects add-iam-policy-binding ${PROJECT_ID} \
   --member=serviceAccount:$(gcloud projects describe ${PROJECT_ID} \
   --format="value(projectNumber)")-compute@developer.gserviceaccount.com \
   --role="roles/run.developer"
-
-gcloud artifacts repositories create containers --repository-format=docker \
-  --location=${REGION} --description="Docker repository"
 ```
 
 ### Run on demo
